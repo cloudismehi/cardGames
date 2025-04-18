@@ -1,0 +1,17 @@
+card class: 
+    -> Texture2D clubs, spades, diamonds, hearts
+    -> func loadCards()
+    -> func show(pos, card{suit, number})
+
+
+dealer class: 
+    -> vector<array, 2> allPossibleCards
+    -> vector cardsOnTable
+    -> dealCards(player1, player2)
+        cardsOnTable.push_back({rand.card, rand.suit})
+
+
+player class: 
+    -> vector<array, 2> pile
+    -> int cards[4] 
+    -> play(&cardsOnTable, &pile) 
