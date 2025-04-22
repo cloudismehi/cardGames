@@ -20,6 +20,8 @@ int main(){
     
     Player cloud(true); 
     Player ro(false); 
+    ro.isBot = false; 
+
     bool gameOver = false; 
     bool playerTurn = true;
     bool playerTurnBufferBool = playerTurn;  
@@ -49,8 +51,13 @@ int main(){
             
             int playerTurnBufferInt = 0; 
 
-            cloud.showCards(cards._showCard, playerTurn); 
-            ro.showCards(cards._showCard, !playerTurn); 
+            if (ro.isBot){
+                cloud.showCards(cards._showCard, true); 
+                ro.showCards(cards._showCard, false); 
+            } else {
+                cloud.showCards(cards._showCard, playerTurn); 
+                ro.showCards(cards._showCard, !playerTurn); 
+            }
             dealer.showCards(cards._showCard); 
             
             if ((playerTurnBufferBool != playerTurn) and (playerTurnBufferInt++ < 120)){
@@ -60,20 +67,25 @@ int main(){
                     playerTurn = !cloud.play(dealer.cardsOnTable, dealer.cardsOnTableRec, ro.pileRec, ro.pile); 
                 }
                 else {
-                    playerTurn = ro.play(dealer.cardsOnTable, dealer.cardsOnTableRec, cloud.pileRec, cloud.pile); 
+                    if (ro.isBot){
+                        playerTurn = ro.playBot(dealer.cardsOnTable, dealer.cardsOnTableRec, cloud.pileRec, cloud.pile); 
+                    } else {
+                        playerTurn = ro.play(dealer.cardsOnTable, dealer.cardsOnTableRec, cloud.pileRec, cloud.pile); 
+                    }
                 }
                 if ((ro.cards.size() == 0) and (cloud.cards.size() == 0)){
-                    if (!dealer.dealCards(cloud.cards, ro.cards, false)) gameOver = true; 
+                    if (!dealer.dealCards(cloud.cards, ro.cards, false)) gameOver = true;
                 }
                 playerTurnBufferBool = playerTurn; 
                 playerTurnBufferInt = 0; 
             }
         }
-        
         EndDrawing(); 
     }
-    CloseWindow(); 
+    
+    
 
+    CloseWindow(); 
     return 0; 
 }
 

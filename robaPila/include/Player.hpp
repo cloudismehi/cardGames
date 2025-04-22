@@ -15,21 +15,21 @@ class Player{
     Rectangle discardRec; 
     Vector2 cardDims = {100.f, 100.f}; 
     int whichCardSelected = -1; 
+    bool isBot = false; 
     
     bool activePlayer = true; 
 
+    Player(); 
     Player(bool _active); 
     void showCards(const std::function<void(Rectangle, int*, bool, bool)> &func, bool myTurn);
     void layoutRects(int _numRectangles, Vector2 _rectDim, int _canvasWidth, Vector2 _initPos, std::vector<Rectangle>& _rectangles); 
     
-    virtual bool play(std::vector<std::array<int, 2>> &_cardsOnTable, std::vector<Rectangle> _cardsOnTableRec,
+    bool play(std::vector<std::array<int, 2>> &_cardsOnTable, std::vector<Rectangle> _cardsOnTableRec,
                 Rectangle _otherPileRec, std::vector<std::array<int,2>> &_otherPile); 
-    
+    bool playBot(std::vector<std::array<int, 2>> &_cardsOnTable, std::vector<Rectangle> _cardsOnTableRec,
+        Rectangle _otherPileRec, std::vector<std::array<int,2>> &_otherPile); 
+
     private: 
     int yPos; 
     bool drawDiscard = false; 
 }; 
-
-class Bot : public Player {
-
-};
