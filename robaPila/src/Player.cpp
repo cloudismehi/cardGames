@@ -17,6 +17,10 @@ Player::Player(bool _active){
     for (int i = 0; i < 4; i++) cardSelected.push_back(false); 
 }
 
+Player::Player(){
+    std::cout << "error making player\n"; 
+}
+
 bool Player::play(std::vector<std::array<int, 2>> &_cardsOnTable, std::vector<Rectangle> _cardsOnTableRec,
                     Rectangle _otherPileRec, std::vector<std::array<int, 2>> &_otherPile){
     bool turnOver = false; 
@@ -99,7 +103,7 @@ void Player::showCards(const std::function<void(Rectangle, int*, bool, bool)> &f
     //draw cards
     for (auto val : cards){
         int cardToDraw[] = {val[1], val[0]}; 
-        func(cardRecs[_index], cardToDraw, cardSelected[_index], !myTurn); 
+        func(cardRecs[_index], cardToDraw, cardSelected[_index], !myTurn);
         _index++; 
     }
     //draw pile
@@ -126,3 +130,44 @@ void Player::layoutRects(int _numRectangles, Vector2 _rectDim, int _canvasWidth,
         }
     }
 }
+
+bool Player::playBot(std::vector<std::array<int, 2>> &_cardsOnTable, std::vector<Rectangle> _cardsOnTableRec,
+    Rectangle _otherPileRec, std::vector<std::array<int,2>> &_otherPile){
+     
+    int _index = 0; 
+    //check roba pila
+    for (auto val : cards){
+        if ((_otherPile.size() != 0) and (val[1] == _otherPile.back()[1])){
+            for (int i = 0; i < _otherPile.size(); i++){
+                pile.push_back(_otherPile[i]); 
+            }
+            std::cout << "  roba pila, " << cards[_index][1] << '\n'; 
+            pile.push_back(cards[_index]); 
+            _otherPile.clear(); 
+            cards.erase(cards.begin() + _index);
+            _index++; 
+            return true; 
+        } 
+    }
+    //grab from table
+    for (int i = 0; i<cards.size(); i++){
+        for (int q = 0; q<_cardsOnTable.size(); q++){
+            if (cards[i][1] == _cardsOnTable[q][1]){
+                std::cout << "  grabbed " << cards[i][1] << " from table\n"; 
+                pile.push_back(_cardsOnTable[q]); 
+                cards.erase(cards.begin() + i); 
+                _cardsOnTable.erase(_cardsOnTable.begin() + q); 
+                return true; 
+            }
+        }
+    }
+    //discard
+    _cardsOnTable.push_back(cards[0]); 
+    std::cout << "  discarded " << cards[0][1] << '\n';  
+    cards.erase(cards.begin()); 
+
+    return true;     
+}
+
+
+
