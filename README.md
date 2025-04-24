@@ -10,3 +10,6 @@ especially when the cards on the table count exceeds more for some number that m
 causes them to be unreliably picked when you're clicking for gameplay 
 
 Additionally, I need to set up my app wrapper for use on macOS computers - for easier play-testing 
+
+### Dependencies 
+- Raylib
